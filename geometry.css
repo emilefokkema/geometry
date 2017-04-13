@@ -1,0 +1,89 @@
+.button {
+	width: 30px;
+	height: 30px;
+	background-color: #ddd;
+	position: absolute;
+	border-radius: 3px;
+	border: 1px solid #aaa;
+}
+.button:hover
+{
+	border: 1px solid #000;
+	
+}
+.point {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"15\" cy=\"15\" r=\"3\" fill=\"black\" /></svg>");
+}
+.circle {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"15\" cy=\"15\" r=\"10\" stroke=\"black\" fill=\"transparent\" stroke-width=\"2\"/></svg>");
+}
+.hide {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"15\" cy=\"15\" r=\"10\" stroke=\"rgba(0,0,0,0.15)\" fill=\"transparent\" stroke-width=\"2\"/></svg>");
+}
+.line {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"2\" y1=\"24\" x2=\"28\" y2=\"6\" stroke=\"black\" fill=\"transparent\" stroke-width=\"2\"/></svg>");
+}
+.active {
+	border: 1px solid #f00;
+	background-color: #daa;
+}
+.remove {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"4\" y1=\"26\" x2=\"26\" y2=\"4\" stroke=\"black\" fill=\"transparent\" stroke-width=\"2\"/><line x1=\"4\" y1=\"4\" x2=\"26\" y2=\"26\" stroke=\"black\" fill=\"transparent\" stroke-width=\"2\"/></svg>");
+}
+.perpendicular {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"11\" y1=\"2\" x2=\"24\" y2=\"28\" stroke=\"red\" fill=\"transparent\" stroke-width=\"2\"/><line x1=\"2\" y1=\"29\" x2=\"28\" y2=\"14\" stroke=\"black\" fill=\"transparent\" stroke-width=\"2\"/><circle cx=\"14\" cy=\"8\" r=\"3\" fill=\"black\" /></svg>");
+}
+.parallel {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"2\" y1=\"14\" x2=\"28\" y2=\"1\" stroke=\"red\" fill=\"transparent\" stroke-width=\"2\"/><line x1=\"2\" y1=\"29\" x2=\"28\" y2=\"16\" stroke=\"black\" fill=\"transparent\" stroke-width=\"2\"/><circle cx=\"10\" cy=\"10\" r=\"3\" fill=\"black\" /></svg>");
+}
+.locus {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><path stroke=\"red\" stroke-width=\"1.5\" fill=\"transparent\" d=\"M 18.9292 5.5028 L 17.9771 4.9915 L 16.9191 4.7636 L 15.7729 4.8201 L 14.5598 5.1514 L 13.3040 5.7389 L 12.0322 6.5551 L 10.7727 7.5648 L 9.5550 8.7266 L 8.4087 9.9942 L 7.3629 11.3185 L 6.4452 12.6488 L 5.6809 13.9355 L 5.0922 15.1311 L 4.6975 16.1923 L 4.5109 17.0816 L 4.5415 17.7684 L 4.7932 18.2303 L 5.2643 18.4536 L 5.9479 18.4340 L 6.8312 18.1765 L 7.8967 17.6955 L 9.1217 17.0136 L 10.4796 16.1612 L 11.9401 15.1753 L 13.4704 14.0979 L 15.0356 12.9743 L 16.6000 11.8518 L 18.1279 10.7775 L 19.5845 9.7968 L 20.9369 8.9514 L 22.1552 8.2780 L 23.2129 7.8067 L 24.0875 7.5598 L 24.7616 7.5512 L 25.2230 7.7855 L 25.4646 8.2579 L 25.4852 8.9545 L 25.2889 9.8523 L 24.8851 10.9205 L 24.2879 12.1212 L 23.5162 13.4109 L 22.5921 14.7421 L 21.5411 16.0648 L 20.3910 17.3287 L 19.1707 18.4845 L 17.9100 19.4863 L 16.6383 20.2928 L 15.3839 20.8693 L 14.1733 21.1885 L 13.0307 21.2321 L 11.9772 20.9913 L 11.0302 20.4673 L 10.2038 19.6711 L 9.5077 18.6238 L 8.9478 17.3555 L 8.5263 15.9042 L 8.2412 14.3153 L 8.0877 12.6393 L 8.0576 10.9305 L 8.1404 9.2452 L 8.3237 7.6395 L 8.5939 6.1675 L 8.9365 4.8796 L 9.3369 3.8205 L 9.7810 3.0278 L 10.2557 2.5305 L 10.7490 2.3480 L 11.2508 2.4896 L 11.7529 2.9538 L 12.2492 3.7286 L 12.7356 4.7916 L 13.2102 6.1108 L 13.6728 7.6459 L 14.1250 9.3490 L 14.5695 11.1670 L 15.0099 13.0427 L 15.4505 14.9171 L 15.8953 16.7311 L 16.3478 18.4278 L 16.8110 19.9540 L 17.2861 21.2624 L 17.7730 22.3129 L 18.2697 23.0740 L 18.7719 23.5238 L 19.2735 23.6506 L 19.7662 23.4536 L 20.2398 22.9423 L 20.6822 22.1368 L 21.0803 21.0664 L 21.4199 19.7692 L 21.6865 18.2900 L 21.8656 16.6795 L 21.9435 14.9919 L 21.9080 13.2834 L 21.7486 11.6102 L 21.4575 10.0264 L 21.0296 8.5826 L 20.4636 7.3235 L 19.7614 6.2870\"></path><circle cx=\"18.9292\" cy=\"5.5028\" r=\"3\" fill=\"black\" /></svg>");
+}
+.angle-bisector {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><line stroke=\"#f00\" stroke-width=\"1.5\" fill=\"transparent\" x1=\"3.266729650278897\" y1=\"25.98696940738791\" x2=\"21.36919809427194\" y2=\"1.381672493222601\"></line><line stroke=\"#000\" stroke-width=\"1.5\" fill=\"transparent\" x1=\"6.2\" y1=\"22\" x2=\"9.420898180168951\" y2=\"4.821876372432266\"></line><line stroke=\"#000\" stroke-width=\"1.5\" fill=\"transparent\" x1=\"6.2\" y1=\"22\" x2=\"16.878914327083983\" y2=\"16.337508793495708\"></line><circle stroke=\"transparent\" fill=\"#000\" cx=\"16.878914327083987\" cy=\"16.337508793495708\" r=\"3\"></circle><circle stroke=\"transparent\" fill=\"#000\" cx=\"6.2\" cy=\"22\" r=\"3\"></circle><circle stroke=\"transparent\" fill=\"#000\" cx=\"9.420898180168951\" cy=\"4.821876372432269\" r=\"3\"></circle></svg>");
+}
+.bisect {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"5\" y1=\"0\" x2=\"20\" y2=\"30\" stroke=\"red\" fill=\"transparent\" stroke-width=\"2\"/><circle cx=\"8\" cy=\"21\" r=\"3\" fill=\"black\" /><circle cx=\"20\" cy=\"15\" r=\"3\" fill=\"black\" /></svg>");
+}
+.midpoint {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><circle cx=\"7\" cy=\"19\" r=\"3\" fill=\"black\" /><circle cx=\"15\" cy=\"15\" r=\"3\" fill=\"red\" /><circle cx=\"23\" cy=\"11\" r=\"3\" fill=\"black\" /></svg>");
+}
+.undo {
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" version=\"1.1\" x=\"0px\" y=\"0px\" viewBox=\"0 0 1000 1000\" enable-background=\"new 0 0 1000 1000\" xml:space=\"preserve\" width=\"30\"><g><g><g><g><path d=\"M55.9,546c0-12.7,10.3-22.9,22.9-22.9h116.9c12.6,0,22.9,10.1,22.9,22.9c0,155,126.3,281.3,281.3,281.3S781.4,701,781.4,546c0-155.2-126.2-281.3-281.3-281.3c-16.4,0-32.8,1.4-49.1,4.3v79.5c0,9.3-5.6,17.7-14,21.2c-8.7,3.5-18.5,1.5-25.2-5l-233.3-158c-8.9-8.9-8.9-23.3,0-32.2L411.8,16.7c6.6-6.6,16.3-8.5,25.1-5c8.4,3.6,14,11.9,14,21.1v71.8c16.4-1.8,32.8-2.8,49.1-2.8c244.8,0,444.1,199.3,444.1,444.1c0,244.8-199.3,444-444.1,444C255.2,990,55.9,790.8,55.9,546z\"/></g></g></g><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/><g/></g></svg>");
+}
+.segment {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"7\" y1=\"19\" x2=\"23\" y2=\"11\" stroke=\"red\" fill=\"transparent\" stroke-width=\"2\"/><circle cx=\"7\" cy=\"19\" r=\"3\" fill=\"black\" /><circle cx=\"23\" cy=\"11\" r=\"3\" fill=\"black\" /></svg>");
+}
+.label:before {
+	position: absolute;
+	left: 0px;
+	top:0px;
+	font-family: Verdana;
+	font-size: 20px;
+	color: #000;
+	content: "A";
+}
+.clear:before {
+	position: absolute;
+	left: 0px;
+	top:0px;
+	font-family: Verdana;
+	font-size: 20px;
+	color: #000;
+	content: "C";
+}
+.svg:before {
+	position: absolute;
+	left: 0px;
+	top:5px;
+	font-family: Verdana;
+	font-size: 8px;
+	color: #000;
+	content: "<svg>";
+}
+.reflect-line {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><line x1=\"5\" y1=\"0\" x2=\"20\" y2=\"30\" stroke=\"black\" fill=\"transparent\" stroke-width=\"2\"/><circle cx=\"8\" cy=\"21\" r=\"3\" fill=\"red\" /><circle cx=\"20\" cy=\"15\" r=\"3\" fill=\"black\" /></svg>");
+}
+.select {
+	background-image: url("data:image/svg+xml;utf8,<svg width=\"30\" height=\"30\" xmlns=\"http://www.w3.org/2000/svg\"><rect x=\"2\" y=\"6\" width=\"26\" height=\"18\" stroke=\"black\" stroke-dasharray=\"3,2\" fill=\"transparent\" stroke-width=\"2\"/></svg>");
+}
