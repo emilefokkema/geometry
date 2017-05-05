@@ -1,6 +1,5 @@
-(function(){
-	var makeIntersectionSet = function(planeMath, shapeFilter){
-		return function(){
+define(["planeMath","shapeFilter"],function(planeMath, shapeFilter){
+	return function(){
 			var intersection = function(s1, s2, calculate, id){
 				return {
 					id:id,
@@ -129,13 +128,4 @@
 				removeForShape: removeForShape
 			};
 		};
-	};
-	
-
-	window.initGeometry = (function(orig){
-		return function(obj){
-			orig(obj);
-			obj.intersectionSet = makeIntersectionSet(obj.planeMath, obj.shapeFilter);
-		};
-	})(window.initGeometry || function(){});
-})();
+});
