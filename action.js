@@ -336,7 +336,7 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 			var revert = stop;
 			selectShape(function(s){
 				var labelloc = s.getLabelLocation();
-				makeNode("<input type='text' style='width:30px;position:absolute;left:"+(labelloc.x + 5)+"px;top:"+(labelloc.y - 15)+"px' id='1'>", function(input){
+				requireElement("<input type='text' style='width:30px;position:absolute;left:"+(labelloc.x + 5)+"px;top:"+(labelloc.y - 15)+"px' id='1'>", function(input){
 					var remove = function(){
 						document.body.removeChild(input);
 					};

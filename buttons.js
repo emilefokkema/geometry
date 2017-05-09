@@ -23,7 +23,7 @@ define(["canvas","action","hash"],function(canvas, action, hash){
 		};
 		var button = function(a, className, right){
 			var p = (right ? rightPosition : leftPosition).next();
-			var b = makeNode("<div id='1' class='button"+(className?" "+className:"")+"' style='"+(right ? "right:"+p.x+"px" : "left:"+p.x+"px")+";top:"+p.y+"px'></div>", function(div){
+			var b = requireElement("<div id='1' class='button"+(className?" "+className:"")+"' style='"+(right ? "right:"+p.x+"px" : "left:"+p.x+"px")+";top:"+p.y+"px'></div>", function(div){
 				var makeActive = function(){addClass(div, 'active');};
 				var makeNonActive = function(){removeClass(div, 'active');};
 				var normalOnClick = function(e){
@@ -170,7 +170,7 @@ define(["canvas","action","hash"],function(canvas, action, hash){
 	}, "remove", true);
 
 	button(function(deactivateButton){
-		makeNode('<div style="position:absolute;left:0px;top:0px;width:100%;height:100%;background-color:#fff" id="1"/>',function(div){
+		requireElement('<div style="position:absolute;left:0px;top:0px;width:100%;height:100%;background-color:#fff" id="1"/>',function(div){
 			div.appendChild(canvas.toSvg());
 			document.body.innerHTML = '';
 			document.body.appendChild(div);
