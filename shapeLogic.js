@@ -56,6 +56,16 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 			getLabelLocation:function(){return getLabelLocation();},
 			toString:function(){return toString();}
 		});
+		this.extend('arc', function(){
+			var end1, middle, end2;
+			useSpecs = function(_specs){
+				end1 = _specs.end1 || planeMath.point(0,0);
+				end2 = _specs.end2 || planeMath.point(0,0);
+				middle = _specs.middle || planeMath.point(0,0);
+			};
+			useSpecs(specs);
+			toString = function(){return 'arc('+end1.toString()+','+middle.toString()+','+end2.toString()+')';};
+		});
 		this.extend('circle',function(){
 			var center, r;
 			useSpecs = function(_specs){
