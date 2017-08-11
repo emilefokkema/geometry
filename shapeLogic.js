@@ -57,14 +57,25 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 			toString:function(){return toString();}
 		});
 		this.extend('arc', function(){
-			var end1, middle, end2;
+			var end1, middle, end2, center, calculateCenter;
 			useSpecs = function(_specs){
 				end1 = _specs.end1 || planeMath.point(0,0);
 				end2 = _specs.end2 || planeMath.point(0,0);
 				middle = _specs.middle || planeMath.point(0,0);
+				calculateCenter();
+			};
+			calculateCenter = function(){
+				var d1 = middle.minus(end1);
+				var d2 = end2.minus(middle);
+				var p1 = end1.plus(d1.scale(1/2));
+				var q1 = middle.plus(d2.scale(1/2));
+				var p2 = p1.plus(d1.matrix(0,-1,1,0));
+				var q2 = q1.plus(d2.matrix(0,-1,1,0));
+				center = planeMath.intersectLines(p1,p2,q1,q2);
 			};
 			useSpecs(specs);
 			toString = function(){return 'arc('+end1.toString()+','+middle.toString()+','+end2.toString()+')';};
+
 		});
 		this.extend('circle',function(){
 			var center, r;
