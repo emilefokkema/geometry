@@ -96,6 +96,14 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 				}
 				return Math.min(p.minus(end1).mod(), p.minus(end2).mod());
 			};
+			closestPointTo = function(p){
+				if(isUnderArc(p)){
+					return center.plus(p.minus(center).unit().scale(radius));
+				}
+				var fromEnd1 = p.minus(end1).mod();
+				var fromEnd2 = p.minus(end2).mod();
+				return fromEnd1 < fromEnd2 ? end1 : end2;
+			};
 		});
 		this.extend('circle',function(){
 			var center, r;
