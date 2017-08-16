@@ -138,8 +138,9 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 					var middleAngle = middle.minus(center).argument();
 					var biggest = Math.max(angle1,angle2);
 					var smallest = Math.min(angle1, angle2);
-					var isBetween = middleAngle > smallest && middleAngle < smallest;
-					var clockwise = !isBetween && (angle2 > angle1) || isBetween && (angle2 < angle1);
+					var isBetween = middleAngle > smallest && middleAngle < biggest;
+					var goUp = (isBetween && angle2 > angle1) || (!isBetween && angle1 > angle2);
+					var clockwise = goUp;
 					return {
 						from:angle1,
 						to:angle2,
