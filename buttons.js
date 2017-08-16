@@ -69,6 +69,14 @@ define(["canvas","action","hash"],function(canvas, action, hash){
 	}, "circle");
 
 	button(function(deactivateButton){
+		return action.makeArcStructure(function(){}, function(){
+			action.doNothing();
+			hash.write();
+			deactivateButton();
+		});
+	}, "arc");
+
+	button(function(deactivateButton){
 		return action.makeLineStructure(function(){}, function(){
 			action.doNothing();
 			hash.write();

@@ -151,6 +151,23 @@ define([
 				return svg;
 			}
 		});
+		this.extend('arc', function(_specs){
+			draw = this.override(draw, function(ctx){
+				this(ctx);
+				var radius = logic.getRadius();
+				var center = logic.getCenter();
+				var angles = logic.getAngles();
+				ctx.beginPath();
+				ctx.arc(center.x, center.y, radius, angles.from, angles.to, !angles.clockwise);
+				ctx.stroke();
+			});
+
+			name = specs.name || 'arc';
+
+			getNewShapeLogic = function(sp){return shapeLogic.arc(sp);};
+
+			logic = getNewShapeLogic(_specs);
+		});
 		this.extend('circle', function(_specs){
 			
 			draw = this.override(draw, function(ctx){
@@ -625,6 +642,9 @@ define([
 		},
 		addCircle: function(specs, toBeExcludedFromMouseEvents){
 			return addShape(shape.circle({stroke:'#d66'}, specs), toBeExcludedFromMouseEvents);
+		},
+		addArc: function(specs, toBeExcludedFromMouseEvents){
+			return addShape(shape.arc({stroke:'#d6d'}, specs), toBeExcludedFromMouseEvents);
 		},
 		addPoint: function(specs, toBeExcludedFromMouseEvents){
 			return addShape(shape.point({stroke:'#66d'}, specs), toBeExcludedFromMouseEvents);

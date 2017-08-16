@@ -131,9 +131,20 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 				getCenter:function(){
 					return center;
 				},
+				getRadius:function(){return radius;},
 				getAngles:function(){
 					var angle1 = end1.minus(center).argument();
 					var angle2 = end2.minus(center).argument();
+					var middleAngle = middle.minus(center).argument();
+					var biggest = Math.max(angle1,angle2);
+					var smallest = Math.min(angle1, angle2);
+					var isBetween = middleAngle > smallest && middleAngle < smallest;
+					var clockwise = !isBetween && (angle2 > angle1) || isBetween && (angle2 < angle1);
+					return {
+						from:angle1,
+						to:angle2,
+						clockwise:clockwise
+					};
 				}
 			});
 		});

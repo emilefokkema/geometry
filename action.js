@@ -191,6 +191,22 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 				revert();
 			};
 		},
+		makeArcStructure:function(res, stop){
+			selectPoint(function(end1){
+				selectPoint(function(middle){
+					selectPoint(function(end2){
+						var arc = canvas.addArc({
+							end1:end1.getSpecs().location,
+							end2:end2.getSpecs().location,
+							middle:middle.getSpecs().location
+						});
+						res(structure.arc(end1, end2, middle, arc));
+						stop();
+					},function(){}, "end2 here");
+				},function(){}, "middle here");
+			},function(){}, "end1 here");
+			return stop;
+		},
 		makeLineStructure: function(res, stop){
 			var revert = stop;
 			var chosenP1, moveLine, line;

@@ -150,6 +150,32 @@ define(["planeMath","intersectionSet","copySet","log","distinctArray","sender","
 			
 			linkToIntersection(canvasPoint, i.s1, i.s2, i);
 		},
+		arc:function(canvasEnd1, canvasEnd2, canvasMiddle, canvasArc){
+			linkChange(
+				canvasArc,
+				canvasEnd1,
+				function(oldSpecs, newSpecs, changer){
+					changer.setEnd1(newSpecs.location);
+				},
+				null,0
+				);
+			linkChange(
+				canvasArc,
+				canvasEnd2,
+				function(oldSpecs, newSpecs, changer){
+					changer.setEnd2(newSpecs.location);
+				},
+				null,0
+				);
+			linkChange(
+				canvasArc,
+				canvasMiddle,
+				function(oldSpecs, newSpecs, changer){
+					changer.setMiddle(newSpecs.location);
+				},
+				null,0
+				);
+		},
 		circle: function(canvasPointCenter, canvasCircle, canvasPointBoundary){
 			if(!canvasPointBoundary){
 				linkChange(canvasCircle, canvasPointCenter, function(oldSpecs, newSpecs, changer){
