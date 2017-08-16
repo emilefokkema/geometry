@@ -13,7 +13,33 @@ define(function(){
 			toString: function(){return "("+x+","+y+")";},
 			equals: function(p){return this == p|| (x == p.x && y == p.y);},
 			matrix:function(a,b,c,d){return point(a*x+b*y,c*x+d*y);},
-			dot:function(p){return x*p.x + y*p.y;}
+			dot:function(p){return x*p.x + y*p.y;},
+			argument:function(p){
+				if(p.x == 0){
+					if(p.y == 0){
+						return 0;
+					}
+					if(p.y > 0){
+						return Math.PI/2;
+					}
+					if(p.y < 0){
+						return 3*Math.PI/2;
+					}
+				}
+				var atan = Math.atan(p.y / p.x);
+				if(p.x > 0){
+					if(p.y < 0){
+						return 2*Math.PI - atan;
+					}
+					return atan;
+				}
+				if(p.x < 0){
+					if(p.y < 0){
+						return Math.PI + atan;
+					}
+					return Math.PI - atan;
+				}
+			}
 		};
 	};
 

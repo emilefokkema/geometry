@@ -104,6 +104,38 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 				var fromEnd2 = p.minus(end2).mod();
 				return fromEnd1 < fromEnd2 ? end1 : end2;
 			};
+			changer = {
+				setEnd1:function(_end1){
+					end1 = _end1;
+					calculateCenter();
+				},
+				setEnd2:function(_end2){
+					end2 = _end2;
+					calculateCenter();
+				},
+				setMiddle:function(_middle){
+					middle = _middle;
+					calculateCenter();
+				}
+			};
+			filter = shapeFilter.ARC;
+			getSpecs = function(){
+				return {
+					end1:end1,
+					end2:end2,
+					middle:middle
+				};
+			};
+			this.expose({
+				changer:getChanger(),
+				getCenter:function(){
+					return center;
+				},
+				getAngles:function(){
+					var angle1 = end1.minus(center).argument();
+					var angle2 = end2.minus(center).argument();
+				}
+			});
 		});
 		this.extend('circle',function(){
 			var center, r;
