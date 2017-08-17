@@ -138,7 +138,10 @@ define(["planeMath","intersectionSet","copySet","log","distinctArray","sender","
 				canvasPoint.ondrag(putOnShapeClosestTo);
 				putOnShapeClosestTo(canvasPoint.getSpecs().location);
 				linkChange(canvasPoint, canvasShape, function(oldSpecs, newSpecs, changer, constants, dependent, independent){
-					changer.setLocation(independent.repositionPoint(dependent.getSpecs().location, oldSpecs, newSpecs));
+					var dependentLocation = dependent.getSpecs().location;
+					var newLocation = independent.repositionPoint(dependentLocation, oldSpecs, newSpecs) || independent.closestPointTo(dependentLocation);
+
+					changer.setLocation(newLocation);
 				}, null, 1);
 			}
 			
