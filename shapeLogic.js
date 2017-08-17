@@ -57,7 +57,7 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 			toString:function(){return toString();}
 		});
 		this.extend('arc', function(){
-			var end1, middle, end2, center, radius, calculateCenter, innerDot, isUnderArc;
+			var end1, middle, end2, center, radius, calculateCenter, innerDot, isUnderArc, projectOnCircle;
 			useSpecs = function(_specs){
 				end1 = _specs.end1 || planeMath.point(0,0);
 				end2 = _specs.end2 || planeMath.point(0,0);
@@ -72,21 +72,26 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 				var p2 = p1.plus(d1.matrix(0,-1,1,0));
 				var q2 = q1.plus(d2.matrix(0,-1,1,0));
 				center = planeMath.intersectLines(p1,p2,q1,q2);
-				radius = end1.minus(center).mod();
+				radius = center ? end1.minus(center).mod() : Infinity;
 				innerDot = d1.dot(d2);
+			};
+			projectOnCircle = function(p){
+				if(center){
+					var pFromCenter = p.minus(center);
+					var fromCenterMod = pFromCenter.mod();
+					if(fromCenterMod == 0){return null;}
+					return center.plus(pFromCenter.scale(radius / fromCenterMod));
+				}
+				return planeMath.projectPointOnLine(end1, end2, p);
 			};
 			isUnderArc = function(p){
 				if(innerDot == 0){
 					var normal = end1.minus(end2).matrix(0,-1,1,0);
 					return p.dot(normal) * middle.dot(normal) > 0;
 				}
-				var pFromCenter = p.minus(center);
-				var fromCenterMod = pFromCenter.mod();
-				if(fromCenterMod == 0){
-				   return false;
-				}
-				p = center.plus(pFromCenter.scale(radius / fromCenterMod));
-				return p.minus(end1).dot(end2.minus(p)) * innerDot > 0;
+				var projectedOnCircle = projectOnCircle(p);
+				if(!projectOnCircle){return false;}
+				return projectedOnCircle.minus(end1).dot(end2.minus(projectedOnCircle)) * innerDot > 0;
 			};
 			useSpecs(specs);
 			toString = function(){return 'arc('+end1.toString()+','+middle.toString()+','+end2.toString()+')';};
