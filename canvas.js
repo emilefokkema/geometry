@@ -154,11 +154,10 @@ define([
 		this.extend('arc', function(_specs){
 			draw = this.override(draw, function(ctx){
 				this(ctx);
-				var radius = logic.getRadius();
-				var center = logic.getCenter();
+				var specs = logic.getSpecs();
 				var angles = logic.getAngles();
 				ctx.beginPath();
-				ctx.arc(center.x, center.y, radius, angles.from, angles.to, !angles.clockwise);
+				ctx.arc(specs.center.x, specs.center.y, specs.radius, angles.from, angles.to, !angles.clockwise);
 				ctx.stroke();
 			});
 
@@ -167,6 +166,16 @@ define([
 			getNewShapeLogic = function(sp){return shapeLogic.arc(sp);};
 
 			logic = getNewShapeLogic(_specs);
+			
+			toSvg = function(){
+				var arc = document.createElementNS('http://www.w3.org/2000/svg','path');
+				setSvgAttributes(arc);
+				var specs = logic.getSpecs();
+				var angles = logic.getAngles();
+				var d = "M" + specs.end1.x + " "+specs.end1.y + " A "+specs.radius+" "+specs.radius+" 0 "+(specs.innerDot > 0 ? "0":"1")+" "+(angles.clockwise ? "1":"0")+" "+specs.end2.x+" "+specs.end2.y;
+				arc.setAttribute("d",d);
+				return [arc];
+			};
 		});
 		this.extend('circle', function(_specs){
 			

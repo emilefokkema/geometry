@@ -128,15 +128,14 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 				return {
 					end1:end1,
 					end2:end2,
-					middle:middle
+					middle:middle,
+					center:center,
+					radius:radius,
+					innerDot:innerDot
 				};
 			};
 			this.expose({
 				changer:getChanger(),
-				getCenter:function(){
-					return center;
-				},
-				getRadius:function(){return radius;},
 				getAngles:function(){
 					var angle1 = end1.minus(center).argument();
 					var angle2 = end2.minus(center).argument();
