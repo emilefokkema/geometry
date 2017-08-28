@@ -57,6 +57,7 @@ define(function(){
 
 	var intersectSegments = function(p1, p2, q1, q2){
 		var i = intersectLines(p1, p2, q1, q2);
+		if(!i){return null;}
 		var onFirst = isBetween(i,p1,p2), onSecond = isBetween(i,q1,p2);
 		if(onFirst && onSecond){
 			return i;
@@ -66,6 +67,7 @@ define(function(){
 
 	var intersectLineAndSegment = function(p1, p2, q1, q2){
 		var i = intersectLines(p1, p2, q1, q2);
+		if(!i){return null;}
 		var onSecond = isBetween(i,q1,q2);
 		if(onSecond){
 			return i;
