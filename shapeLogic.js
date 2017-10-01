@@ -57,7 +57,7 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 			toString:function(){return toString();}
 		});
 		this.extend('arc', function(){
-			var end1, middle, end2, center, radius, calculateCenter, innerDot, isUnderArc, projectOnCircle;
+			var end1, middle, end2, center, radius, calculateCenter, innerDot, isUnderArc, projectOnCircle, getAngles;
 			useSpecs = function(_specs){
 				end1 = _specs.end1 || planeMath.point(0,0);
 				end2 = _specs.end2 || planeMath.point(0,0);
@@ -134,23 +134,43 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 					innerDot:innerDot
 				};
 			};
+			getAngles = function(){
+				var angle1 = end1.minus(center).argument();
+				var angle2 = end2.minus(center).argument();
+				var middleAngle = middle.minus(center).argument();
+				var biggest = Math.max(angle1,angle2);
+				var smallest = Math.min(angle1, angle2);
+				var isBetween = middleAngle > smallest && middleAngle < biggest;
+				var goUp = (isBetween && angle2 > angle1) || (!isBetween && angle1 > angle2);
+				var clockwise = goUp;
+				return {
+					from:angle1,
+					to:angle2,
+					clockwise:clockwise
+				};
+			};
+			movePointAround = function(){
+				var angles = getAngles();
+				var from = angles.from, to = angles.to;
+				if(!angles.clockwise){
+					var sFrom = from;
+					from = to;
+					to = sFrom;
+				}
+				if(from > to){
+					from -= 2*Math.PI;
+				}
+				var result = [];
+				var radiusOneZero = planeMath.point(1,0).scale(radius);
+				for(var a = from;a<=to;a+=0.05){
+					var cos = Math.cos(a), sin = Math.sin(a);
+					result.push(center.plus(radiusOneZero.matrix(cos, -sin, sin, cos)));
+				}
+				return result;
+			};
 			this.expose({
 				changer:getChanger(),
-				getAngles:function(){
-					var angle1 = end1.minus(center).argument();
-					var angle2 = end2.minus(center).argument();
-					var middleAngle = middle.minus(center).argument();
-					var biggest = Math.max(angle1,angle2);
-					var smallest = Math.min(angle1, angle2);
-					var isBetween = middleAngle > smallest && middleAngle < biggest;
-					var goUp = (isBetween && angle2 > angle1) || (!isBetween && angle1 > angle2);
-					var clockwise = goUp;
-					return {
-						from:angle1,
-						to:angle2,
-						clockwise:clockwise
-					};
-				}
+				getAngles:getAngles
 			});
 		});
 		this.extend('circle',function(){
