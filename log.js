@@ -67,7 +67,29 @@ define(["canvas","planeMath","copySet","floatPattern","distinctArray"], function
 					return p;
 				};
 			}
-		},{
+		},
+		{
+			level:0,
+			matches:function(kind){return kind == "arc";},
+			make:function(info, label, hidden){
+				return function(){
+					var match = info.match(new RegExp("\\(("+floatPattern+"),("+floatPattern+")\\),\\(("+floatPattern+"),("+floatPattern+")\\),\\(("+floatPattern+"),("+floatPattern+")\\)"));
+					var arc = canvas.addArc({
+						end1:planeMath.point(parseFloat(match[1]), parseFloat(match[2])),
+						middle:planeMath.point(parseFloat(match[3]), parseFloat(match[4])),
+						end2:planeMath.point(parseFloat(match[5]), parseFloat(match[6]))
+					});
+					if(label){
+						arc.setLabel(label);
+					}
+					if(hidden){
+						arc.hideUnhide();
+					}
+					return arc;
+				};
+			}
+		},
+		{
 			level:0,
 			matches:function(kind){return kind == "circle";},
 			make:function(info, label, hidden){
