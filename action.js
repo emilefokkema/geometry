@@ -192,18 +192,27 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 			};
 		},
 		makeArcStructure:function(res, stop){
+			var tempShape;
 			selectPoint(function(end1){
+				tempShape = canvas.addSegment({p1:end1.getSpecs().location, p2:end1.getSpecs().location});
 				selectPoint(function(middle){
+					var end1loc = end1.getSpecs().location;
+					var middleloc = middle.getSpecs().location;
+					tempShape.remove();
+					tempShape = canvas.addArc({
+						end1:end1loc,
+						end2:middleloc,
+						middle:middleloc
+					});
 					selectPoint(function(end2){
-						var arc = canvas.addArc({
-							end1:end1.getSpecs().location,
-							end2:end2.getSpecs().location,
-							middle:middle.getSpecs().location
-						});
-						res(structure.arc(end1, end2, middle, arc));
+						res(structure.arc(end1, end2, middle, tempShape));
 						stop();
-					},function(){}, "end2 here");
-				},function(){}, "middle here");
+					},function(p){
+						tempShape.getChanger().setEnd2(p);
+					}, "end2 here");
+				},function(p){
+					tempShape.getChanger().setP2(p);
+				}, "middle here");
 			},function(){}, "end1 here");
 			return stop;
 		},

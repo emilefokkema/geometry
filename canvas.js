@@ -155,6 +155,14 @@ define([
 			draw = this.override(draw, function(ctx){
 				this(ctx);
 				var specs = logic.getSpecs();
+				if(!specs.center){
+					ctx.beginPath();
+					ctx.moveTo(specs.end1.x, specs.end1.y);
+					ctx.lineTo(specs.end2.x, specs.end2.y);
+					ctx.closePath();
+					ctx.stroke();
+					return;
+				}
 				var angles = logic.getAngles();
 				ctx.beginPath();
 				ctx.arc(specs.center.x, specs.center.y, specs.radius, angles.from, angles.to, !angles.clockwise);
@@ -247,8 +255,6 @@ define([
 				this(ctx);
 				var sp = logic.getSpecs();
 				if(!sp.p1.equals(sp.p2)){
-					
-					
 					ctx.beginPath();
 					ctx.moveTo(sp.p1.x, sp.p1.y);
 					ctx.lineTo(sp.p2.x, sp.p2.y);
