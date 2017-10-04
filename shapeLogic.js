@@ -1,9 +1,9 @@
-define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFilter){
+define(["planeMath","sender","shapeFilter","point"],function(planeMath, sender, shapeFilter, point){
 	return makeModule(function(specs){
 		var getSpecs = function(){return {};},
 			changer = {},
 			useSpecs = function(_specs){},
-			closestPointTo = function(p){return planeMath.point(0,0);},
+			closestPointTo = function(p){return point(0,0);},
 			repositionPoint = function(){},
 			getChanger = function(){
 				var o = {useSpecs:useSpecs};
@@ -35,7 +35,7 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 			passesFilter = function(f){return shapeFilter.contains(f, filter);},
 			available = true,
 			onchangeavailability = sender(),
-			getLabelLocation = function(){return planeMath.point(0,0);},
+			getLabelLocation = function(){return point(0,0);},
 			toString = function(){return '';},
 			movePointAround = function(p){return [p];},
 			filter = shapeFilter.ALL;
@@ -59,9 +59,9 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 		this.extend('arc', function(){
 			var end1, middle, end2, center, radius, calculateCenter, innerDot, isUnderArc, projectOnCircle, getAngles;
 			useSpecs = function(_specs){
-				end1 = _specs.end1 || planeMath.point(0,0);
-				end2 = _specs.end2 || planeMath.point(0,0);
-				middle = _specs.middle || planeMath.point(0,0);
+				end1 = _specs.end1 || point(0,0);
+				end2 = _specs.end2 || point(0,0);
+				middle = _specs.middle || point(0,0);
 				calculateCenter();
 			};
 			calculateCenter = function(){
@@ -156,7 +156,7 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 					from -= 2*Math.PI;
 				}
 				var result = [];
-				var radiusOneZero = planeMath.point(1,0).scale(radius);
+				var radiusOneZero = point(1,0).scale(radius);
 				for(var a = from;a<=to;a+=0.05){
 					var cos = Math.cos(a), sin = Math.sin(a);
 					result.push(center.plus(radiusOneZero.matrix(cos, -sin, sin, cos)));
@@ -171,7 +171,7 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 		this.extend('circle',function(){
 			var center, r;
 			useSpecs = function(_specs){
-				center = _specs.center || planeMath.point(0,0);
+				center = _specs.center || point(0,0);
 				r = _specs.r || 1;
 			};
 			useSpecs(specs);
@@ -215,7 +215,7 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 
 			getLabelLocation = function(){
 				var d = Math.sqrt(2) / 2;
-				return center.plus(planeMath.point(1,0).scale(r+2).matrix(d, d, -d, d));
+				return center.plus(point(1,0).scale(r+2).matrix(d, d, -d, d));
 			};
 
 			repositionPoint = function(p, oldSpecs, newSpecs){
@@ -230,8 +230,8 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 		this.extend('line',function(){
 			var p1, p2;
 			useSpecs = function(_specs){
-				p1 = _specs.p1 || planeMath.point(0,0);
-				p2 = _specs.p2 || planeMath.point(1,0);
+				p1 = _specs.p1 || point(0,0);
+				p2 = _specs.p2 || point(1,0);
 			};
 			toString = function(){return 'line('+p1.toString()+','+p2.toString()+')';};
 			useSpecs(specs);
@@ -286,8 +286,8 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 		this.extend('segment',function(){
 			var p1, p2, x;
 			useSpecs = function(_specs){
-				p1 = _specs.p1 || planeMath.point(0,0);
-				p2 = _specs.p2 || planeMath.point(1,0);
+				p1 = _specs.p1 || point(0,0);
+				p2 = _specs.p2 || point(1,0);
 			};
 			toString = function(){return 'segment('+p1.toString()+','+p2.toString()+')';};
 			useSpecs(specs);
@@ -359,7 +359,7 @@ define(["planeMath","sender","shapeFilter"],function(planeMath, sender, shapeFil
 		this.extend('point',function(){
 			var loc;
 			useSpecs = function(_specs){
-				loc = _specs.location || planeMath.point(0,0);
+				loc = _specs.location || point(0,0);
 			};
 			toString = function(){return 'point'+loc.toString();};
 			useSpecs(specs);

@@ -330,7 +330,7 @@ define(["planeMath","intersectionSet","copySet","log","distinctArray","sender","
 					});
 					locusShape.getChanger().setPointSets(pointSets);
 					
-				}, 10);
+				}, 10, true);
 				canvasPoint1.onchange(function(oldSpecs, newSpecs){
 					setAllCopies();
 					createPoints();

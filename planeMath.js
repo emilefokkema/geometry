@@ -1,44 +1,5 @@
 define(function(){
-	var point = function(x,y){
-		
-		return {
-			x:x,
-			y:y,
-			minus: function(p){return point(x - p.x, y - p.y);},
-			plus: function(p){return point(x + p.x, y + p.y);},
-			cross:function(p){return x*p.y - y*p.x;},
-			mod: function(){return Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2));},
-			scale: function(r){return point(r*x, r*y);},
-			unit: function(){return this.scale(1/this.mod());},
-			toString: function(){return "("+x+","+y+")";},
-			equals: function(p){return this == p|| (x == p.x && y == p.y);},
-			matrix:function(a,b,c,d){return point(a*x+b*y,c*x+d*y);},
-			dot:function(p){return x*p.x + y*p.y;},
-			argument:function(){
-				if(x == 0){
-					if(y == 0){
-						return 0;
-					}
-					if(y > 0){
-						return Math.PI/2;
-					}
-					if(y < 0){
-						return 3*Math.PI/2;
-					}
-				}
-				var atan = Math.atan(y / x);
-				if(x > 0){
-					if(y < 0){
-						return 2*Math.PI + atan;
-					}
-					return atan;
-				}
-				if(x < 0){
-					return Math.PI + atan;
-				}
-			}
-		};
-	};
+	
 
 	var isBetween = function(q, p1, p2){
 		return q.minus(p1).dot(q.minus(p2)) <= 0;
@@ -139,7 +100,6 @@ define(function(){
 		return p2.plus(x.matrix(cos, -sin, sin, cos));
 	};
 	return {
-		point:point,
 		isBetween:isBetween,
 		intersectLines:intersectLines,
 		intersectSegments:intersectSegments,

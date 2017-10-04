@@ -1,4 +1,4 @@
-define(["planeMath","shapeFilter"],function(planeMath, shapeFilter){
+define(["planeMath","shapeFilter","point"],function(planeMath, shapeFilter, point){
 	return function(){
 			var intersection = function(s1, s2, calculate, id){
 				return {
@@ -86,7 +86,7 @@ define(["planeMath","shapeFilter"],function(planeMath, shapeFilter){
 			
 			var getForShapes = function(s1, s2, p){
 				var candidates = all.filter(function(i){return i.s1 == s1 && i.s2 == s2 || i.s2 == s1 && i.s1 == s2;});
-				var result = candidates.lastMin(function(c){return (c.calculate()||planeMath.point(0,0)).minus(p).mod();});
+				var result = candidates.lastMin(function(c){return (c.calculate()||point(0,0)).minus(p).mod();});
 				if(result.calculate()){
 					return result;
 				}

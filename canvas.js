@@ -6,8 +6,9 @@ define([
 	"intersectionSet",
 	"throttle",
 	"shapeLogic",
-	"intersectWithBox"
-	],function(planeMath, sender, copySet, shapeFilter, intersectionSet, throttle, shapeLogic, intersectWithBox){
+	"intersectWithBox",
+	"point"
+	],function(planeMath, sender, copySet, shapeFilter, intersectionSet, throttle, shapeLogic, intersectWithBox, point){
 	var w = document.body.offsetWidth, h = document.body.offsetHeight;
 	var context, c = document.createElement('canvas');
 	c.setAttribute('width', w);
@@ -527,7 +528,7 @@ define([
 			tooltip.setVisible(false);
 			var hitPoints, hitShape, hitIntersection, intersectingShape1, intersectingShape2, hitShapes = [];
 			shapes.map(function(s){
-				if(!s.toBeExcludedFromMouseEvents && s.isAvailable() && (!s.isHidden() || showHidden) && s.passesFilter(currentMouseFilter) && s.contains(planeMath.point(e.clientX, e.clientY))){
+				if(!s.toBeExcludedFromMouseEvents && s.isAvailable() && (!s.isHidden() || showHidden) && s.passesFilter(currentMouseFilter) && s.contains(point(e.clientX, e.clientY))){
 					hitShapes.push(s);
 					
 				}else{
@@ -547,7 +548,7 @@ define([
 					if(hitShapes.length == 1){
 						doToHitShape(hitShapes[hitShapes.length - 1], e);
 					}else{
-						hitIntersection = intersections.getForShapes(hitShapes[hitShapes.length - 2], hitShapes[hitShapes.length - 1], planeMath.point(e.clientX, e.clientY));
+						hitIntersection = intersections.getForShapes(hitShapes[hitShapes.length - 2], hitShapes[hitShapes.length - 1], point(e.clientX, e.clientY));
 						if(hitIntersection){
 							doToHitIntersection((function(i){
 								return intersectionWrapperSet.addFor(i);

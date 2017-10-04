@@ -1,4 +1,4 @@
-define(["canvas","planeMath","copySet","floatPattern","distinctArray"], function(canvas, planeMath, copySet, floatPattern, distinctArray){
+define(["canvas","planeMath","copySet","floatPattern","distinctArray","point"], function(canvas, planeMath, copySet, floatPattern, distinctArray, point){
 	var allCalls = [];
 	var call = function(f, name, args){
 		var toString = function(getShapeName){
@@ -56,7 +56,7 @@ define(["canvas","planeMath","copySet","floatPattern","distinctArray"], function
 				console.log(label);
 				return function(){
 					var match = info.match(new RegExp("("+floatPattern+"),("+floatPattern+")"));
-					var p = planeMath.point(parseFloat(match[1]), parseFloat(match[2]));
+					var p = point(parseFloat(match[1]), parseFloat(match[2]));
 					p = canvas.addPoint({location:p});
 					if(label){
 						p.setLabel(label);
@@ -75,9 +75,9 @@ define(["canvas","planeMath","copySet","floatPattern","distinctArray"], function
 				return function(){
 					var match = info.match(new RegExp("\\(("+floatPattern+"),("+floatPattern+")\\),\\(("+floatPattern+"),("+floatPattern+")\\),\\(("+floatPattern+"),("+floatPattern+")\\)"));
 					var arc = canvas.addArc({
-						end1:planeMath.point(parseFloat(match[1]), parseFloat(match[2])),
-						middle:planeMath.point(parseFloat(match[3]), parseFloat(match[4])),
-						end2:planeMath.point(parseFloat(match[5]), parseFloat(match[6]))
+						end1:point(parseFloat(match[1]), parseFloat(match[2])),
+						middle:point(parseFloat(match[3]), parseFloat(match[4])),
+						end2:point(parseFloat(match[5]), parseFloat(match[6]))
 					});
 					if(label){
 						arc.setLabel(label);
@@ -95,7 +95,7 @@ define(["canvas","planeMath","copySet","floatPattern","distinctArray"], function
 			make:function(info, label, hidden){
 				return function(){
 					var match = info.match(new RegExp("\\(("+floatPattern+"),("+floatPattern+")\\),("+floatPattern+")"));
-					var c = canvas.addCircle({center:planeMath.point(parseFloat(match[1]), parseFloat(match[2])),r:parseFloat(match[3])});
+					var c = canvas.addCircle({center:point(parseFloat(match[1]), parseFloat(match[2])),r:parseFloat(match[3])});
 					if(label){
 						c.setLabel(label);
 					}
@@ -112,7 +112,7 @@ define(["canvas","planeMath","copySet","floatPattern","distinctArray"], function
 			make:function(info, label, hidden){
 				return function(){
 					var match = info.match(new RegExp("\\(("+floatPattern+"),("+floatPattern+")\\),\\(("+floatPattern+"),("+floatPattern+")\\)"));
-					var l = canvas.addLine({p1:planeMath.point(parseFloat(match[1]),parseFloat(match[2])),p2:planeMath.point(parseFloat(match[3]),parseFloat(match[4]))});
+					var l = canvas.addLine({p1:point(parseFloat(match[1]),parseFloat(match[2])),p2:point(parseFloat(match[3]),parseFloat(match[4]))});
 					if(label){
 						l.setLabel(label);
 					}
@@ -129,7 +129,7 @@ define(["canvas","planeMath","copySet","floatPattern","distinctArray"], function
 			make:function(info, label, hidden){
 				return function(){
 					var match = info.match(new RegExp("\\(("+floatPattern+"),("+floatPattern+")\\),\\(("+floatPattern+"),("+floatPattern+")\\)"));
-					var l = canvas.addSegment({p1:planeMath.point(parseFloat(match[1]),parseFloat(match[2])),p2:planeMath.point(parseFloat(match[3]),parseFloat(match[4]))});
+					var l = canvas.addSegment({p1:point(parseFloat(match[1]),parseFloat(match[2])),p2:point(parseFloat(match[3]),parseFloat(match[4]))});
 					if(label){
 						l.setLabel(label);
 					}
@@ -147,7 +147,7 @@ define(["canvas","planeMath","copySet","floatPattern","distinctArray"], function
 				return function(argByIndex){
 					var matchWithId, matchWithPoint = info.match(new RegExp("(\\d+),(\\d+),\\(("+floatPattern+"),("+floatPattern+")\\)"));
 					if(matchWithPoint){
-						return canvas.getIntersectionForShapesAndPoint(argByIndex(matchWithPoint[1]), argByIndex(matchWithPoint[2]), planeMath.point(parseFloat(matchWithPoint[3]), parseFloat(matchWithPoint[4])));
+						return canvas.getIntersectionForShapesAndPoint(argByIndex(matchWithPoint[1]), argByIndex(matchWithPoint[2]), point(parseFloat(matchWithPoint[3]), parseFloat(matchWithPoint[4])));
 					}
 					else{
 						matchWithId = info.match(new RegExp("(\\d+),(\\d+),(\\d+)"));

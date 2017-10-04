@@ -1,19 +1,19 @@
-define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFilter, planeMath, structure){
+define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas, shapeFilter, planeMath, structure, point){
 	var selectLocationOrPoint = function(send, suggest, tooltipMessage){
 		canvas.setMouseFilter(shapeFilter.POINT);
 		canvas.setShapeCursor(canvas.cursor.pointer);
 		canvas.onmouseovernotshape(function(e){
-			suggest(planeMath.point(e.clientX, e.clientY));
+			suggest(point(e.clientX, e.clientY));
 		});
 		canvas.onmouseovershape(function(s, e, tooltip){
 			tooltip(tooltipMessage);
-			suggest(s.closestPointTo(planeMath.point(e.clientX, e.clientY)));
+			suggest(s.closestPointTo(point(e.clientX, e.clientY)));
 		});
 		canvas.onclicknotshape(function(e){
-			send(planeMath.point(e.clientX, e.clientY));
+			send(point(e.clientX, e.clientY));
 		});
 		canvas.onclickshape(function(s,e){
-			send(s.closestPointTo(planeMath.point(e.clientX, e.clientY)), s);
+			send(s.closestPointTo(point(e.clientX, e.clientY)), s);
 		});
 	};
 	var selectLocationOrShapeOrIntersection = function(send, suggest, tooltipMessage){
@@ -22,21 +22,21 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 		canvas.setNoShapeCursor(canvas.cursor.none);
 		canvas.onmousedownonshape();
 		canvas.onmouseovernotshape(function(e){
-			suggest(planeMath.point(e.clientX, e.clientY));
+			suggest(point(e.clientX, e.clientY));
 		});
 		canvas.onmouseovershape(function(s,e, tooltip){
 			tooltip(tooltipMessage);
-			suggest(s.closestPointTo(planeMath.point(e.clientX, e.clientY)));
+			suggest(s.closestPointTo(point(e.clientX, e.clientY)));
 		});
 		canvas.onmouseoverintersection(function(i, e, tooltip){
 			tooltip(tooltipMessage);
 			suggest(i.calculate());
 		});
 		canvas.onclicknotshape(function(e){
-			send(planeMath.point(e.clientX, e.clientY));
+			send(point(e.clientX, e.clientY));
 		});
 		canvas.onclickshape(function(s, e){
-			send(s.closestPointTo(planeMath.point(e.clientX, e.clientY)), s);
+			send(s.closestPointTo(point(e.clientX, e.clientY)), s);
 		});
 		canvas.onclickintersection(function(i){
 			send(null, null, i);
@@ -52,11 +52,11 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 			send(s);
 		});
 		canvas.onmouseovernotshape(function(e){
-			suggest(planeMath.point(e.clientX, e.clientY));
+			suggest(point(e.clientX, e.clientY));
 		});
 		canvas.onmouseovershape(function(s, e, tooltip){
 			tooltip(tooltipMessage);
-			suggest(s.closestPointTo(planeMath.point(e.clientX, e.clientY)));
+			suggest(s.closestPointTo(point(e.clientX, e.clientY)));
 		});
 	};
 	var selectLine = function(send){
@@ -126,7 +126,7 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 			canvas.setShapeCursor(canvas.cursor.grabbing);
 			canvas.setNoShapeCursor(canvas.cursor.grabbing);
 			var doMove = function(e){
-				s.dragTo(planeMath.point(e.clientX, e.clientY));
+				s.dragTo(point(e.clientX, e.clientY));
 			};
 
 			canvas.onmouseupSingle(self.doNothing);
@@ -137,7 +137,7 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 		},
 		makePointStructure: function(res, stop){
 			var p = canvas.addPoint({
-				location: planeMath.point(200,200)
+				location: point(200,200)
 			}, true);
 			
 			selectLocationOrShapeOrIntersection(function(l, s, i){
@@ -221,7 +221,7 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 			var chosenP1, moveLine, line;
 			selectPoint(function(s){
 				chosenP1 = s;
-				line = canvas.addLine({p1:chosenP1.getSpecs().location, p2:chosenP1.getSpecs().location.plus(planeMath.point(100,0))});
+				line = canvas.addLine({p1:chosenP1.getSpecs().location, p2:chosenP1.getSpecs().location.plus(point(100,0))});
 				moveLine = function(p){line.getChanger().moveTo(p);};
 				selectLocationOrPoint(function(l, p){
 					if(p){
@@ -248,7 +248,7 @@ define(["canvas","shapeFilter","planeMath","structure"],function(canvas, shapeFi
 			var revert = stop;
 			var moveSegment, segment;
 			selectPoint(function(p1){
-				segment = canvas.addSegment({p1:p1.getSpecs().location, p2:p1.getSpecs().location.plus(planeMath.point(100,0))});
+				segment = canvas.addSegment({p1:p1.getSpecs().location, p2:p1.getSpecs().location.plus(point(100,0))});
 				moveSegment = function(p){segment.getChanger().setP2(p);};
 				selectPoint(function(p2){
 					res(structure.segment(p1, segment, p2));

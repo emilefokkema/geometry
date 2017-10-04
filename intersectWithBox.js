@@ -1,10 +1,10 @@
-define(["planeMath"], function(planeMath){
+define(["planeMath","point"], function(planeMath, point){
 	var w = document.body.offsetWidth, h = document.body.offsetHeight;
 	var sides = [
-		{p1:planeMath.point(0,0), p2: planeMath.point(w,0)},
-		{p1:planeMath.point(w,0), p2: planeMath.point(w,h)},
-		{p1:planeMath.point(w,h), p2: planeMath.point(0,h)},
-		{p1:planeMath.point(0,h), p2: planeMath.point(0,0)}
+		{p1:point(0,0), p2: point(w,0)},
+		{p1:point(w,0), p2: point(w,h)},
+		{p1:point(w,h), p2: point(0,h)},
+		{p1:point(0,h), p2: point(0,0)}
 	];
 	var intersectWithSide = function(p1, p2, side){
 		return planeMath.intersectLines(p1, p2, side.p1, side.p2);
