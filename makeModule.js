@@ -29,7 +29,7 @@
                 var addBlockToBody=function(body){
                     var where=body.indexOf("this.extend");
                     if(where>-1){
-                        return "if(false){"+body.substring(0,where)+"}"+body.substr(where);
+                        return body.substr(where);
                     }else{
                         return "";
                     }
