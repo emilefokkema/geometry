@@ -1,4 +1,4 @@
-define(["planeMath","sender","shapeFilter","point"],function(planeMath, sender, shapeFilter, point){
+define(["planeMath","sender","shapeFilter","point","emc"],function(planeMath, sender, shapeFilter, point, makeModule){
 	return makeModule(function(specs){
 		var getSpecs = function(){return {};},
 			changer = {},
