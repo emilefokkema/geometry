@@ -1,4 +1,4 @@
-define(["canvas","action","hash"],function(canvas, action, hash){
+define(["canvas","action","hash","requireElement"],function(canvas, action, hash, requireElement){
 	var button = (function(){
 		var positionProvider = function(){
 			var x = 20, y = 20;
