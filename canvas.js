@@ -10,7 +10,7 @@ define([
 	"point",
 	"emc"
 	],function(planeMath, sender, copySet, shapeFilter, intersectionSet, throttle, shapeLogic, intersectWithBox, point, makeModule){
-	var w = document.body.offsetWidth, h = document.body.offsetHeight;
+	var w = window.innerWidth, h = window.innerHeight;
 	var context, c = document.createElement('canvas');
 	c.setAttribute('width', w);
 	c.setAttribute('height', h);

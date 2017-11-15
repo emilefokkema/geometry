@@ -1,5 +1,5 @@
 define(["planeMath","point"], function(planeMath, point){
-	var w = document.body.offsetWidth, h = document.body.offsetHeight;
+	var w = window.innerWidth, h = window.innerHeight;
 	var sides = [
 		{p1:point(0,0), p2: point(w,0)},
 		{p1:point(w,0), p2: point(w,h)},
