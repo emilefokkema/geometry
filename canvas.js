@@ -8,14 +8,15 @@ define([
 	"shapeLogic",
 	"intersectWithBox",
 	"point",
-	"emc"
-	],function(planeMath, sender, copySet, shapeFilter, intersectionSet, throttle, shapeLogic, intersectWithBox, point, makeModule){
+	"emc",
+	"infiniteCanvas"
+	],function(planeMath, sender, copySet, shapeFilter, intersectionSet, throttle, shapeLogic, intersectWithBox, point, makeModule, infiniteCanvas){
 	var w = window.innerWidth, h = window.innerHeight;
-	var context, c = document.createElement('canvas');
+	var c = document.createElement('canvas');
 	c.setAttribute('width', w);
 	c.setAttribute('height', h);
 	document.body.appendChild(c);
-	context = c.getContext('2d');
+	var infCan = infiniteCanvas(c);
 	var ondraw = sender();
 	var onshapechange = sender();
 	var onmouseup = sender();
@@ -74,7 +75,7 @@ define([
 			var labelloc = logic.getLabelLocation();
 			ctx.font = "12px Verdana";
 			ctx.fillText(label, labelloc.x + 5, labelloc.y - 5);
-			ctx.lineWidth = thickness;
+			ctx.lineWidth = ctx.getRelativeSize(thickness);
 			ctx.fillStyle = fill;
 
 		};
@@ -221,13 +222,15 @@ define([
 				this(ctx);
 				var sp = logic.getSpecs();
 				if(!sp.p1.equals(sp.p2)){
-					var onEdges = intersectWithBox(sp.p1, sp.p2);
+					//var onEdges = intersectWithBox(sp.p1, sp.p2);
+					ctx.save();
 					
-					ctx.beginPath();
-					ctx.moveTo(onEdges.p1.x, onEdges.p1.y);
-					ctx.lineTo(onEdges.p2.x, onEdges.p2.y);
-					ctx.closePath();
-					ctx.stroke();
+					ctx.translate(sp.p1.x, sp.p1.y);
+					ctx.rotate(sp.p2.minus(sp.p1).argument());
+					ctx.lineWidth = ctx.getRelativeSize(thickness);
+					ctx.strokeRect(-Infinity, 0, Infinity, Infinity);
+
+					ctx.restore();
 				}
 				
 			});
@@ -293,7 +296,7 @@ define([
 				ctx.fillStyle = ctx.strokeStyle;
 				ctx.strokeStyle = 'transparent';
 				ctx.beginPath();
-				ctx.arc(sp.location.x, sp.location.y, 2*thickness, 0, 2*Math.PI);
+				ctx.arc(sp.location.x, sp.location.y, ctx.getRelativeSize(2*thickness), 0, 2*Math.PI);
 				ctx.closePath();
 				ctx.fill();
 			});
@@ -430,13 +433,15 @@ define([
 	var getIntersectionForShapesAndId = function(w1, w2, id){
 		return intersectionWrapperSet.addFor(intersections.getForShapesAndId(shapeBelongingTo(w1), shapeBelongingTo(w2), id));
 	};
-
-	var draw = throttle(function(){
-		c.width = w;
+	infCan.onDraw(function(context){
 		shapes.map(function(s){
 			s.draw(context);
 		});
 		tooltip.draw(context);
+	});
+	var draw = throttle(function(){
+		infCan.drawAll();
+		
 		ondraw();
 	}, 10);
 
@@ -638,20 +643,19 @@ define([
 		function(i, x, y){
 			onclickintersection(i, x, y);
 		}
-		
 	);
 
-	c.addEventListener('mousemove', function(e){moveHandler(e.clientX, e.clientY);});
+	// c.addEventListener('mousemove', function(e){moveHandler(e.clientX, e.clientY);});
 
-	c.addEventListener('mousedown', function(e){onmousedown(e.clientX, e.clientY);downHandler(e.clientX, e.clientY);});
+	// c.addEventListener('mousedown', function(e){onmousedown(e.clientX, e.clientY);downHandler(e.clientX, e.clientY);});
 
-	c.addEventListener('mouseup', function(e){
-		onmouseupSingle(e.clientX, e.clientY);
-		onmouseup(e.clientX, e.clientY);
-		draw();
-	});
+	// c.addEventListener('mouseup', function(e){
+	// 	onmouseupSingle(e.clientX, e.clientY);
+	// 	onmouseup(e.clientX, e.clientY);
+	// 	draw();
+	// });
 
-	c.addEventListener('click', function(e){clickHandler(e.clientX, e.clientY);});
+	// c.addEventListener('click', function(e){clickHandler(e.clientX, e.clientY);});
 
 	return {
 		newShapeOnRemove:function(f){
