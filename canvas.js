@@ -531,8 +531,9 @@ define([
 		doIfNotHitShape = doIfNotHitShape || function(){};
 		doToHitIntersection = doToHitIntersection || function(){};
 		var toReturn = function(x, y){
+			var hitShape = false;
 			tooltip.setVisible(false);
-			var hitPoints, hitShape, hitIntersection, intersectingShape1, intersectingShape2, hitShapes = [];
+			var hitPoints, hitIntersection, intersectingShape1, intersectingShape2, hitShapes = [];
 			shapes.map(function(s){
 				if(!s.toBeExcludedFromMouseEvents && s.isAvailable() && (!s.isHidden() || showHidden) && s.passesFilter(currentMouseFilter) && s.contains(point(x, y))){
 					hitShapes.push(s);
@@ -544,6 +545,7 @@ define([
 			if(hitShapes.length == 0){
 				doIfNotHitShape(x, y);
 			}else{
+				hitShape = true;
 				tooltip.setPosition(x, y);
 				tooltip.setVisible(true);
 				tooltip.setText("");
@@ -570,7 +572,7 @@ define([
 			if(drawAfter){
 				draw();
 			}
-			
+			return hitShape;
 		};
 		return toReturn;
 	};
