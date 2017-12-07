@@ -535,7 +535,11 @@ define([
 			tooltip.setVisible(false);
 			var hitPoints, hitIntersection, intersectingShape1, intersectingShape2, hitShapes = [];
 			shapes.map(function(s){
-				if(!s.toBeExcludedFromMouseEvents && s.isAvailable() && (!s.isHidden() || showHidden) && s.passesFilter(currentMouseFilter) && s.contains(point(x, y))){
+				var contains = s.contains(point(x, y));
+				var available = s.isAvailable();
+				var isHidden = s.isHidden();
+				var passesFilter = s.passesFilter(currentMouseFilter);
+				if(!s.toBeExcludedFromMouseEvents && available && (!isHidden || showHidden) && passesFilter && contains){
 					hitShapes.push(s);
 					
 				}else{
@@ -646,18 +650,25 @@ define([
 			onclickintersection(i, x, y);
 		}
 	);
-
-	// c.addEventListener('mousemove', function(e){moveHandler(e.clientX, e.clientY);});
-
-	// c.addEventListener('mousedown', function(e){onmousedown(e.clientX, e.clientY);downHandler(e.clientX, e.clientY);});
-
-	// c.addEventListener('mouseup', function(e){
-	// 	onmouseupSingle(e.clientX, e.clientY);
-	// 	onmouseup(e.clientX, e.clientY);
-	// 	draw();
-	// });
-
-	// c.addEventListener('click', function(e){clickHandler(e.clientX, e.clientY);});
+	infCan.onMouseMove(function(x,y){
+		moveHandler(x,y);
+	});
+	infCan.onDragMove(function(x,y){
+		moveHandler(x,y);
+	});
+	infCan.onClick(function(pos){
+		clickHandler(pos.x, pos.y);
+	});
+	infCan.onDragStart(function(x, y){
+		onmousedown(x,y);
+		var hitShape = downHandler(x,y);
+		return !hitShape;
+	});
+	infCan.onDragEnd(function(x, y){
+		onmouseupSingle(x,y);
+		onmouseup(x,y);
+		draw();
+	});
 
 	return {
 		newShapeOnRemove:function(f){
