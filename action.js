@@ -2,18 +2,18 @@ define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas,
 	var selectLocationOrPoint = function(send, suggest, tooltipMessage){
 		canvas.setMouseFilter(shapeFilter.POINT);
 		canvas.setShapeCursor(canvas.cursor.pointer);
-		canvas.onmouseovernotshape(function(e){
-			suggest(point(e.clientX, e.clientY));
+		canvas.onmouseovernotshape(function(x, y){
+			suggest(point(x, y));
 		});
-		canvas.onmouseovershape(function(s, e, tooltip){
+		canvas.onmouseovershape(function(s, x, y, tooltip){
 			tooltip(tooltipMessage);
-			suggest(s.closestPointTo(point(e.clientX, e.clientY)));
+			suggest(s.closestPointTo(point(x, y)));
 		});
-		canvas.onclicknotshape(function(e){
-			send(point(e.clientX, e.clientY));
+		canvas.onclicknotshape(function(x, y){
+			send(point(x, y));
 		});
-		canvas.onclickshape(function(s,e){
-			send(s.closestPointTo(point(e.clientX, e.clientY)), s);
+		canvas.onclickshape(function(s,x, y){
+			send(s.closestPointTo(point(x, y)), s);
 		});
 	};
 	var selectLocationOrShapeOrIntersection = function(send, suggest, tooltipMessage){
@@ -21,22 +21,22 @@ define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas,
 		canvas.setShapeCursor(canvas.cursor.none);
 		canvas.setNoShapeCursor(canvas.cursor.none);
 		canvas.onmousedownonshape();
-		canvas.onmouseovernotshape(function(e){
-			suggest(point(e.clientX, e.clientY));
+		canvas.onmouseovernotshape(function(x, y){
+			suggest(point(x, y));
 		});
-		canvas.onmouseovershape(function(s,e, tooltip){
+		canvas.onmouseovershape(function(s,x, y, tooltip){
 			tooltip(tooltipMessage);
-			suggest(s.closestPointTo(point(e.clientX, e.clientY)));
+			suggest(s.closestPointTo(point(x, y)));
 		});
-		canvas.onmouseoverintersection(function(i, e, tooltip){
+		canvas.onmouseoverintersection(function(i, x, y, tooltip){
 			tooltip(tooltipMessage);
 			suggest(i.calculate());
 		});
-		canvas.onclicknotshape(function(e){
-			send(point(e.clientX, e.clientY));
+		canvas.onclicknotshape(function(x, y){
+			send(point(x, y));
 		});
-		canvas.onclickshape(function(s, e){
-			send(s.closestPointTo(point(e.clientX, e.clientY)), s);
+		canvas.onclickshape(function(s, x, y){
+			send(s.closestPointTo(point(x, y)), s);
 		});
 		canvas.onclickintersection(function(i){
 			send(null, null, i);
@@ -48,15 +48,15 @@ define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas,
 		canvas.setShapeCursor(canvas.cursor.pointer);
 		canvas.setNoShapeCursor(canvas.cursor.none);
 		canvas.onmousedownonshape();
-		canvas.onclickshape(function(s, e){
+		canvas.onclickshape(function(s, x, y){
 			send(s);
 		});
-		canvas.onmouseovernotshape(function(e){
-			suggest(point(e.clientX, e.clientY));
+		canvas.onmouseovernotshape(function(x, y){
+			suggest(point(x, y));
 		});
-		canvas.onmouseovershape(function(s, e, tooltip){
+		canvas.onmouseovershape(function(s, x, y, tooltip){
 			tooltip(tooltipMessage);
-			suggest(s.closestPointTo(point(e.clientX, e.clientY)));
+			suggest(s.closestPointTo(point(x, y)));
 		});
 	};
 	var selectLine = function(send){
@@ -68,11 +68,11 @@ define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas,
 		canvas.setShapeCursor(canvas.cursor.pointer);
 		canvas.setNoShapeCursor(canvas.cursor.none);
 		canvas.onmousedownonshape();
-		canvas.onmouseovershape(function(s, e, tooltip){
+		canvas.onmouseovershape(function(s, x, y, tooltip){
 			tooltip(tooltipMessage);
 		});
 		canvas.onmouseovernotshape();
-		canvas.onclickshape(function(s, e){
+		canvas.onclickshape(function(s, x, y){
 			send(s);
 		});
 
@@ -96,10 +96,10 @@ define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas,
 			canvas.onmousedownonshape();
 			canvas.setNoShapeCursor(canvas.cursor.none);
 			canvas.setShapeCursor(canvas.cursor.none);
-			canvas.onclickshape(function(s, e){
+			canvas.onclickshape(function(s, x, y){
 				canvas.selectShape(s);
 			});
-			canvas.onclicknotshape(function(e){
+			canvas.onclicknotshape(function(x, y){
 				canvas.clearSelection();
 			});
 			return function(){
@@ -114,7 +114,7 @@ define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas,
 			canvas.setNoShapeCursor(canvas.cursor.none);
 			canvas.setShapeCursor(canvas.cursor.none);
 			canvas.onclicknotshape();
-			canvas.onclickshape(function(s, e){
+			canvas.onclickshape(function(s, x, y){
 				s.hideUnhide();
 			});
 			return function(){
@@ -122,18 +122,18 @@ define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas,
 				stop();
 			};
 		},
-		startMoving: function(s, e){
+		startMoving: function(s, x, y){
 			canvas.setShapeCursor(canvas.cursor.grabbing);
 			canvas.setNoShapeCursor(canvas.cursor.grabbing);
-			var doMove = function(e){
-				s.dragTo(point(e.clientX, e.clientY));
+			var doMove = function(x, y){
+				s.dragTo(point(x, y));
 			};
 
 			canvas.onmouseupSingle(self.doNothing);
-			canvas.onmouseovershape(function(s, e){doMove(e);});
+			canvas.onmouseovershape(function(s, x, y){doMove(x, y);});
 			canvas.onmouseovernotshape(doMove);
-			canvas.onmouseoverintersection(function(i,e){doMove(e);});
-			doMove(e);
+			canvas.onmouseoverintersection(function(i,x, y){doMove(x, y);});
+			doMove(x, y);
 		},
 		makePointStructure: function(res, stop){
 			var p = canvas.addPoint({
