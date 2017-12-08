@@ -1,4 +1,4 @@
-define(["canvas","shapeFilter","planeMath","structure","point"],function(canvas, shapeFilter, planeMath, structure, point){
+define(["canvas","shapeFilter","planeMath","structure","point","requireElement"],function(canvas, shapeFilter, planeMath, structure, point, requireElement){
 	var selectLocationOrPoint = function(send, suggest, tooltipMessage){
 		canvas.setMouseFilter(shapeFilter.POINT);
 		canvas.setShapeCursor(canvas.cursor.pointer);
