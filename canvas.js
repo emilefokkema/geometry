@@ -73,8 +73,10 @@ define([
 			}
 			ctx.fillStyle = stroke;
 			var labelloc = logic.getLabelLocation();
-			ctx.font = "12px Verdana";
-			ctx.fillText(label, labelloc.x + 5, labelloc.y - 5);
+			var twelve = ctx.getRelativeSize(12);
+			var five = ctx.getRelativeSize(5);
+			ctx.font = twelve + "px Verdana";
+			ctx.fillText(label, labelloc.x + five, labelloc.y - five);
 			ctx.lineWidth = ctx.getRelativeSize(thickness);
 			ctx.fillStyle = fill;
 
