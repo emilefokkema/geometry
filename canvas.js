@@ -28,7 +28,7 @@ define([
 
 	var tooltip = (function(){
 		var x=100,y=100;
-		var visible = true;
+		var visible = false;
 		var text = "hoi";
 		var setPosition = function(xx,yy){
 			x = xx;
@@ -37,7 +37,8 @@ define([
 		var draw = function(ctx){
 			if(visible){
 				ctx.fillStyle = "#f00";
-				ctx.font = "12px Verdana";
+				var twelve = ctx.getRelativeSize(12);
+				ctx.font = twelve + "px Verdana";
 				ctx.fillText(text, x, y);
 			}
 		};
