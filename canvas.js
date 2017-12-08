@@ -83,7 +83,6 @@ define([
 
 		};
 		var logic;
-		var contains = function(p){return logic.distance(p) < 10;};
 		var onmouseover = sender().add(function(x, y){
 			changedStroke = '#f00';
 		});
@@ -125,7 +124,7 @@ define([
 			getNewShapeLogic: function(){return getNewShapeLogic(logic.getSpecs());},
 			isHidden:function(){return hidden;},
 			isAvailable: function(){return logic.isAvailable();},
-			contains: contains,
+			distance:function(p){return logic.distance(p);},
 			makeAvailable: function(b){logic.makeAvailable(b);},
 			onchangeavailability:function(f){logic.onchangeavailability(f);},
 			onmouseover: onmouseover,
@@ -538,7 +537,7 @@ define([
 			tooltip.setVisible(false);
 			var hitPoints, hitIntersection, intersectingShape1, intersectingShape2, hitShapes = [];
 			shapes.map(function(s){
-				var contains = s.contains(point(x, y));
+				var contains = s.distance(point(x, y)) < 10;
 				var available = s.isAvailable();
 				var isHidden = s.isHidden();
 				var passesFilter = s.passesFilter(currentMouseFilter);
