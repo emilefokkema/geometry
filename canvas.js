@@ -537,7 +537,7 @@ define([
 			tooltip.setVisible(false);
 			var hitPoints, hitIntersection, intersectingShape1, intersectingShape2, hitShapes = [];
 			shapes.map(function(s){
-				var contains = s.distance(point(x, y)) < 10;
+				var contains = s.distance(point(x, y)) * infCan.scale < 10;
 				var available = s.isAvailable();
 				var isHidden = s.isHidden();
 				var passesFilter = s.passesFilter(currentMouseFilter);
