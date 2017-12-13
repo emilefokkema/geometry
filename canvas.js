@@ -51,7 +51,9 @@ define([
 			setText:setText
 		};
 	})();
-
+	var applyTransform = function(t, x, y){
+		return point(t.a * x + t.c * y + t.e, t.b * x + t.d * y + t.f);
+	};
 	var shape = makeModule(function(specs){
 		var fill = specs.fill || 'transparent';
 		var stroke = specs.stroke || 'black';
@@ -101,13 +103,14 @@ define([
 			svgEl.setAttribute('stroke-width',thickness);
 			svgEl.setAttribute('fill',fill);
 		};
-		var getLabelSvg = function(){
+		var getLabelSvg = function(scale, transform){
 			if(label){
 				var text = document.createElementNS('http://www.w3.org/2000/svg','text');
 				text.setAttribute('font-family','Verdana');
-				text.setAttribute('font-size','12px');
+				text.setAttribute('font-size',12/scale + 'px');
 				text.setAttribute('fill', stroke);
 				var loc = logic.getLabelLocation();
+				loc = applyTransform(transform, loc.x, loc.y);
 				text.setAttribute('x',loc.x + 5);
 				text.setAttribute('y', loc.y - 5);
 				text.appendChild(document.createTextNode(label));
@@ -148,10 +151,10 @@ define([
 			movePointAround: function(p){return logic.movePointAround(p);},
 			setLabel:function(txt){label = txt;},
 			getLabelLocation:function(){return logic.getLabelLocation();},
-			toSvg:function(){
-				var svg = toSvg();
+			toSvg:function(scale, transform){
+				var svg = toSvg(scale, transform);
 				if(label){
-					svg.push(getLabelSvg());
+					svg.push(getLabelSvg(scale, transform));
 				}
 				return svg;
 			}
@@ -180,12 +183,14 @@ define([
 
 			logic = getNewShapeLogic(_specs);
 			
-			toSvg = function(){
+			toSvg = function(scale, transform){
 				var arc = document.createElementNS('http://www.w3.org/2000/svg','path');
 				setSvgAttributes(arc);
 				var specs = logic.getSpecs();
 				var angles = logic.getAngles();
-				var d = "M" + specs.end1.x + " "+specs.end1.y + " A "+specs.radius+" "+specs.radius+" 0 "+(specs.innerDot > 0 ? "0":"1")+" "+(angles.clockwise ? "1":"0")+" "+specs.end2.x+" "+specs.end2.y;
+				var end1 = applyTransform(transform, specs.end1.x, specs.end1.y);
+				var end2 = applyTransform(transform, specs.end2.x, specs.end2.y);
+				var d = "M" + end1.x + " "+end1.y + " A "+specs.radius * scale+" "+specs.radius * scale+" 0 "+(specs.innerDot > 0 ? "0":"1")+" "+(angles.clockwise ? "1":"0")+" "+end2.x+" "+end2.y;
 				arc.setAttribute("d",d);
 				return [arc];
 			};
@@ -207,13 +212,14 @@ define([
 
 			logic = getNewShapeLogic(_specs);
 
-			toSvg = function(){
+			toSvg = function(scale, transform){
 				var circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
 				setSvgAttributes(circle);
 				var sp = logic.getSpecs();
-				circle.setAttribute('cx', sp.center.x);
-				circle.setAttribute('cy', sp.center.y);
-				circle.setAttribute('r', sp.r);
+				var center = applyTransform(transform, sp.center.x, sp.center.y);
+				circle.setAttribute('cx', center.x);
+				circle.setAttribute('cy', center.y);
+				circle.setAttribute('r', sp.r * scale);
 				return [circle];
 			};
 			
@@ -243,10 +249,12 @@ define([
 
 			logic = getNewShapeLogic(_specs);
 
-			toSvg = function(){
+			toSvg = function(scale, transform){
 				var sp = logic.getSpecs();
 				if(!sp.p1.equals(sp.p2)){
-					var onEdges = intersectWithBox(sp.p1, sp.p2);
+					var p1 = applyTransform(transform, sp.p1.x, sp.p1.y);
+					var p2 = applyTransform(transform, sp.p2.x, sp.p2.y);
+					var onEdges = intersectWithBox(p1, p2);
 					var line = document.createElementNS('http://www.w3.org/2000/svg','line');
 					setSvgAttributes(line);
 					line.setAttribute('x1',onEdges.p1.x);
@@ -276,16 +284,17 @@ define([
 
 			logic = getNewShapeLogic(_specs);
 
-			toSvg = function(){
+			toSvg = function(scale, transform){
 				var sp = logic.getSpecs();
 				if(!sp.p1.equals(sp.p2)){
-					
+					var p1 = applyTransform(transform, sp.p1.x, sp.p1.y);
+					var p2 = applyTransform(transform, sp.p2.x, sp.p2.y);
 					var line = document.createElementNS('http://www.w3.org/2000/svg','line');
 					setSvgAttributes(line);
-					line.setAttribute('x1',sp.p1.x);
-					line.setAttribute('y1',sp.p1.y);
-					line.setAttribute('x2',sp.p2.x);
-					line.setAttribute('y2',sp.p2.y);
+					line.setAttribute('x1',p1.x);
+					line.setAttribute('y1',p1.y);
+					line.setAttribute('x2',p2.x);
+					line.setAttribute('y2',p2.y);
 					return [line];
 				}
 			};
@@ -307,13 +316,14 @@ define([
 			getNewShapeLogic = function(sp){return shapeLogic.point(sp);}
 			logic = getNewShapeLogic(_specs);
 
-			toSvg = function(){
+			toSvg = function(scale, transform){
 				var circle = document.createElementNS('http://www.w3.org/2000/svg','circle');
 				circle.setAttribute('stroke','transparent');
 				circle.setAttribute('fill', stroke);
 				var sp = logic.getSpecs();
-				circle.setAttribute('cx', sp.location.x);
-				circle.setAttribute('cy', sp.location.y);
+				var location = applyTransform(transform, sp.location.x, sp.location.y);
+				circle.setAttribute('cx', location.x);
+				circle.setAttribute('cy', location.y);
 				circle.setAttribute('r', 2*thickness);
 				return [circle];
 			};
@@ -338,17 +348,18 @@ define([
 			name = specs.name || 'point';
 			getNewShapeLogic = function(sp){return shapeLogic.locus(sp);}
 			logic = getNewShapeLogic(_specs);
-			toSvg = function(){
+			toSvg = function(scale, transform){
 				var ps = logic.getSpecs().pointSets;
 				return ps.map(function(s){
 					var path = document.createElementNS('http://www.w3.org/2000/svg','path');
 					setSvgAttributes(path);
 					var d="";
 					for(var i=0;i<s.length;i++){
+						var p = applyTransform(transform, s[i].x, s[i].y);
 						if(i==0){
-							d += "M "+s[i].x+" "+s[i].y;
+							d += "M "+p.x+" "+p.y;
 						}else{
-							d += " L "+s[i].x+" "+s[i].y;
+							d += " L "+p.x+" "+p.y;
 						}
 					}
 					path.setAttribute('d',d);
@@ -484,9 +495,11 @@ define([
 		svg.setAttribute('width',w);
 		svg.setAttribute('height', h);
 		svg.setAttribute('xmlns','http://www.w3.org/2000/svg');
+		var scale = infCan.scale;
+		var transform = infCan.transform;
 		shapes.map(function(s){
 			if(s.isAvailable() && !s.isHidden()){
-				var els = s.toSvg();
+				var els = s.toSvg(scale, transform);
 				if(els && els.length){
 					els.map(function(el){
 						svg.appendChild(el);
