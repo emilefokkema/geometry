@@ -97,6 +97,10 @@ define(["planeMath","sender","shapeFilter","point","emc"],function(planeMath, se
 			toString = function(){return 'arc('+end1.toString()+','+middle.toString()+','+end2.toString()+')';};
 			distance = function(p){
 				if(isUnderArc(p)){
+					if(!center){
+						var projected = planeMath.projectPointOnLine(end1, end2, p);
+						return projected.minus(p).mod();
+					}
 					return Math.abs(radius - p.minus(center).mod());
 				}
 				return Math.min(p.minus(end1).mod(), p.minus(end2).mod());
